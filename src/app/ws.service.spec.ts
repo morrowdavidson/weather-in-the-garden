@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ApixuService } from './apixu.service';
+import { WsService } from './ws.service';
 
-describe('ApixuService', () => {
-  let service: ApixuService;
+describe('WsService', () => {
+  let service: WsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ApixuService);
+    service = TestBed.inject(WsService);
   });
 
   it('should be created', () => {

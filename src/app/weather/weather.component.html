@@ -4,7 +4,7 @@
       <h3 class="text-center my-4">Search for Weather:</h3>
       <form
         [formGroup]="weatherSearchForm"
-        (ngSubmit)="sendToAPIXU(weatherSearchForm.value)"
+        (ngSubmit)="sendToWS(weatherSearchForm.value)"
       >
         <div class="form-group">
           <input
