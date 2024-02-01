@@ -14,6 +14,8 @@ interface FormValues {
 export class WeatherComponent {
   public weatherSearchForm!: FormGroup;
   public weatherData: any;
+  public totalPrecipitation: number = 0;
+
   constructor(private formBuilder: FormBuilder, private wsService: WsService) {}
   ngOnInit() {
     this.weatherSearchForm = this.formBuilder.group({
@@ -25,17 +27,18 @@ export class WeatherComponent {
     this.wsService.getWeather(formValues.location).subscribe((data) => {
       this.weatherData = data;
 
-      let totalPrecipitation = 0;
       const dateArray = Object.keys(this.weatherData.historical);
 
+      this.totalPrecipitation = 0;
+
       for (let i = 0; i < dateArray.length; i++) {
-        totalPrecipitation +=
+        this.totalPrecipitation +=
           this.weatherData.historical[dateArray[i]].hourly[0].precip;
       }
 
       console.log(
         'Total precipitation for the last week: ',
-        totalPrecipitation + 'mm'
+        this.totalPrecipitation + 'mm'
       );
     });
   }

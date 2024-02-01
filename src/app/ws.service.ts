@@ -39,7 +39,7 @@ export class WsService {
         location +
         '&historical_date=' +
         dates +
-        '&hourly=1&interval=24'
+        '&hourly=1&interval=24&units=f'
     );
   }
 }
