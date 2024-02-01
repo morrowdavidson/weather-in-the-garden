@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ApixuService } from '../apixu.service';
+import { WsService } from '../ws.service';
 
 interface FormValues {
   location: string;
@@ -14,20 +14,29 @@ interface FormValues {
 export class WeatherComponent {
   public weatherSearchForm!: FormGroup;
   public weatherData: any;
-  constructor(
-    private formBuilder: FormBuilder,
-    private apixuService: ApixuService
-  ) {}
+  constructor(private formBuilder: FormBuilder, private wsService: WsService) {}
   ngOnInit() {
     this.weatherSearchForm = this.formBuilder.group({
       location: [''],
     });
   }
 
-  sendToAPIXU(formValues: FormValues) {
-    this.apixuService.getWeather(formValues.location).subscribe((data) => {
+  sendToWS(formValues: FormValues) {
+    this.wsService.getWeather(formValues.location).subscribe((data) => {
       this.weatherData = data;
-      console.log(this.weatherData);
+
+      let totalPrecipitation = 0;
+      const dateArray = Object.keys(this.weatherData.historical);
+
+      for (let i = 0; i < dateArray.length; i++) {
+        totalPrecipitation +=
+          this.weatherData.historical[dateArray[i]].hourly[0].precip;
+      }
+
+      console.log(
+        'Total precipitation for the last week: ',
+        totalPrecipitation + 'mm'
+      );
     });
   }
 }

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { ApixuService } from './apixu.service';
+import { WsService } from './ws.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,7 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     RouterModule.forRoot(allAppRoutes),
     ReactiveFormsModule,
   ],
-  providers: [ApixuService],
+  providers: [WsService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
