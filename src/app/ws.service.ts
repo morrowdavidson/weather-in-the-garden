@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environment/environment';
-const weatherAPIKey = environment.weatherAPIKey;
+const weatherStackAPIKey = environment.weatherStackAPIKey;
+const openWeatherAPIKEY = environment.openWeatherAPIKEY;
 
 @Injectable({
   providedIn: 'root',
@@ -34,12 +35,22 @@ export class WsService {
 
     return this.http.get(
       'https://api.weatherstack.com/historical?access_key=' +
-        weatherAPIKey +
+        weatherStackAPIKey +
         '&query=' +
         location +
         '&historical_date=' +
         dates +
         '&hourly=1&interval=24&units=f'
+    );
+  }
+
+  getForecast(location: string) {
+    return this.http.get(
+      'https://api.openweathermap.org/data/2.5/forecast?q=' +
+        location +
+        '&appid=' +
+        openWeatherAPIKEY +
+        '&units=imperial'
     );
   }
 }

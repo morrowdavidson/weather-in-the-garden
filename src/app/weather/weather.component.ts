@@ -61,5 +61,10 @@ export class WeatherComponent {
       }
     });
     console.log(weatherStats);
+
+    //Get the forcast weather data
+    this.wsService.getForecast(formValues.location).subscribe((data) => {
+      console.log(data);
+    });
   }
 }
