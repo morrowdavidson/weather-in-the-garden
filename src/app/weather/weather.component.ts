@@ -17,6 +17,7 @@ export class WeatherComponent {
   public totalPrecipitation: number = 0;
 
   constructor(private formBuilder: FormBuilder, private wsService: WsService) {}
+
   ngOnInit() {
     this.weatherSearchForm = this.formBuilder.group({
       location: [''],
@@ -24,7 +25,17 @@ export class WeatherComponent {
   }
 
   sendToWS(formValues: FormValues) {
-    this.wsService.getWeather(formValues.location).subscribe((data) => {
+    interface WeatherStat {
+      precipitation: number;
+      mintemp: number;
+      maxtemp: number;
+      date: Date;
+    }
+
+    let weatherStats: Record<string, WeatherStat> = {};
+
+    //Get the historical weather data
+    this.wsService.getHistorical(formValues.location).subscribe((data) => {
       this.weatherData = data;
 
       const dateArray = Object.keys(this.weatherData.historical);
@@ -32,14 +43,23 @@ export class WeatherComponent {
       this.totalPrecipitation = 0;
 
       for (let i = 0; i < dateArray.length; i++) {
-        this.totalPrecipitation +=
+        let day = 'day' + (-i - 1); // Create a string for the day
+        let precipitation =
           this.weatherData.historical[dateArray[i]].hourly[0].precip;
-      }
+        let mintemp = this.weatherData.historical[dateArray[i]].mintemp;
+        let maxtemp = this.weatherData.historical[dateArray[i]].maxtemp;
+        let date = new Date(dateArray[i]);
 
-      console.log(
-        'Total precipitation for the last week: ',
-        this.totalPrecipitation + 'mm'
-      );
+        this.totalPrecipitation += precipitation;
+        // Create a new property in weatherStats for the day and assign it the precipitation and temperature
+        weatherStats[day] = {
+          precipitation: precipitation,
+          mintemp: mintemp,
+          maxtemp: maxtemp,
+          date: date,
+        };
+      }
     });
+    console.log(weatherStats);
   }
 }

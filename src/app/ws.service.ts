@@ -29,7 +29,7 @@ export class WsService {
     return dates;
   }
 
-  getWeather(location: string) {
+  getHistorical(location: string) {
     const dates = this.getLastSevenDays();
 
     return this.http.get(
