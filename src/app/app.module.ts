@@ -10,6 +10,9 @@ import { RouterModule } from '@angular/router';
 import { allAppRoutes } from './routes';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import * as echarts from 'echarts';
+import { NgxEchartsModule } from 'ngx-echarts';
+
 @NgModule({
   declarations: [AppComponent, WeatherComponent],
   imports: [
@@ -18,6 +21,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     RouterModule.forRoot(allAppRoutes),
     ReactiveFormsModule,
+    NgxEchartsModule.forRoot({
+      echarts,
+    }),
   ],
   providers: [WsService],
   bootstrap: [AppComponent],
