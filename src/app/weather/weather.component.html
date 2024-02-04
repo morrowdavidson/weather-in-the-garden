@@ -1,7 +1,9 @@
 <div class="container">
   <div class="row">
+    <div class="col-md-3"></div>
+
     <div class="col-md-6">
-      <h3 class="text-center my-4">Search for Weather:</h3>
+      <h3 class="text-center my-4">DoesMyGardenNeedWatering:</h3>
       <form
         [formGroup]="weatherSearchForm"
         (ngSubmit)="sendToWS(weatherSearchForm.value)"
@@ -18,35 +20,35 @@
         </div>
         <div class="text-center">
           <button type="submit" class="btn btn-success btn-md my-4">
-            Search for the weather
+            Should I Water My Garden?
           </button>
         </div>
       </form>
     </div>
-    <div class="col-md-6">
-      <h3 class="text-center my-4">Weather Details:</h3>
-      <p class="text-center">
-        Weather conditions:
-        {{ this.weatherData?.current.weather_descriptions[0] }}
-      </p>
-      <p class="text-center">
-        Temperature:
-        {{ this.weatherData?.current.temperature }} &deg;
-      </p>
-
-      <p class="text-center">
-        Feels like: {{ this.weatherData?.current.feelslike }} &deg;
-      </p>
-
-      <p class="text-center">
-        Total Percipitation Last 7 Days: {{ this.totalPrecipitation }}"
-      </p>
-      <p class="text-center">
-        Location Searched: {{ this.weatherData?.request.query }}
-      </p>
-    </div>
   </div>
+  <div class="col-md-3"></div>
+
   <div class="row">
-    <div class="col-md-6" echarts [options]="weatherOptions"></div>
+    <div class="col-md-2"></div>
+
+    <div *ngIf="searchClicked" class="col-md-3">
+      <h2>Precipitation last 7 days:</h2>
+      <h1>{{ this.totalPrecipitation }}"</h1>
+      <h3 *ngIf="totalPrecipitation < 0.5">
+        garden needs water about {{ 1 - this.totalPrecipitation }}"
+      </h3>
+      <h3 *ngIf="totalPrecipitation >= 0.5 && totalPrecipitation < 1">
+        garden may need less water about
+        {{ 1 - this.totalPrecipitation }}"
+      </h3>
+      <h3 *ngIf="totalPrecipitation > 1">garden does not need water.</h3>
+    </div>
+    <div
+      class="col-md-5"
+      style="width: 400px; height: 600px"
+      echarts
+      [options]="weatherOptions"
+    ></div>
+    <div class="col-md-1"></div>
   </div>
 </div>

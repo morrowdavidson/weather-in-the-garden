@@ -26,6 +26,7 @@ export class WeatherComponent implements OnInit {
   public totalPrecipitation: number = 0;
   public weatherStats: Record<string, WeatherStat> = {};
   public weatherOptions: any;
+  public searchClicked: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private wsService: WsService) {}
 
@@ -36,6 +37,7 @@ export class WeatherComponent implements OnInit {
   }
 
   sendToWS(formValues: FormValues) {
+    this.searchClicked = true;
     //Get the historical weather data
     this.wsService.getHistorical(formValues.location).subscribe((data) => {
       this.weatherData = data;
@@ -160,15 +162,14 @@ export class WeatherComponent implements OnInit {
     //   };
 
     this.weatherOptions = {
-      title: {
-        text: 'Past 7 Days Rainfall: ' + this.totalPrecipitation + '"',
-      },
+      title: {},
+
       tooltip: {},
       legend: {
         show: false,
       },
       xAxis: {
-        data: ['Precipitation in inches'],
+        data: [],
       },
       yAxis: { min: 0, max: 1 },
       series: [
