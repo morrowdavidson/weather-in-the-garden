@@ -44,13 +44,13 @@ export class WsService {
     );
   }
 
-  getForecast(location: string) {
-    return this.http.get(
-      'https://api.openweathermap.org/data/2.5/forecast?q=' +
-        location +
-        '&appid=' +
-        openWeatherAPIKEY +
-        '&units=imperial'
-    );
-  }
+  // getForecast(location: string) {
+  //   return this.http.get(
+  //     'https://api.openweathermap.org/data/2.5/forecast?q=' +
+  //       location +
+  //       '&appid=' +
+  //       openWeatherAPIKEY +
+  //       '&units=imperial'
+  //   );
+  // }
 }
