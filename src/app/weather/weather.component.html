@@ -1,6 +1,7 @@
 <div class="container">
   <div class="row">
-    <div id="searchContainer" class="col-md-4">
+    <div class="col-md-3"></div>
+    <div id="searchContainer" class="col-md-3">
       <h1 class="my-4">Does My Garden Need Watering?</h1>
       <form
         [formGroup]="weatherSearchForm"
@@ -26,6 +27,7 @@
 
     <div *ngIf="searchClicked" id="rainInfo" class="col-md-3">
       <h2>Precipitation last 7 days:</h2>
+      <p>In the city:</p>
       <h1>{{ this.totalPrecipitation }}"</h1>
       <h3 *ngIf="totalPrecipitation < 0.5">My garden needs water this week.</h3>
       <p *ngIf="totalPrecipitation < 0.5">
@@ -37,14 +39,21 @@
       <p *ngIf="totalPrecipitation >= 0.5 && totalPrecipitation < 1">
         Try and water about {{ 1 - this.totalPrecipitation }}"
       </p>
-
       <h3 *ngIf="totalPrecipitation > 1">My garden does not need water.</h3>
     </div>
-    <div
-      class="col-md-6"
-      style="width: 500px; height: 600px"
-      echarts
-      [options]="weatherOptions"
-    ></div>
+    <div class="col-md-3"></div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+
+    <div *ngIf="searchClicked" class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Rain Gauge</h5>
+          <div echarts [options]="weatherOptions"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3"></div>
   </div>
 </div>

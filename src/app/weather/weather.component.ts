@@ -99,172 +99,45 @@ export class WeatherComponent implements OnInit {
 
   setOptions() {
     const weatherStatsArray = Object.values(this.weatherStats);
-
-    //   this.weatherOptions = {
-    //     title: {
-    //       text: 'Weather Status Chart',
-    //     },
-    //     legend: {
-    //       data: ['Precipitation', 'Min Temp', 'Max Temp'],
-    //     },
-    //     tooltip: {
-    //       order: 'valueDesc',
-    //       trigger: 'axis',
-    //     },
-    //     xAxis: {
-    //       data: weatherStatsArray.map((w) => w.date.toLocaleDateString()),
-    //     },
-    //     yAxis: [
-    //       {
-    //         type: 'value',
-    //         name: 'Temperature',
-    //         position: 'left',
-    //         alignTicks: true,
-    //         axisLine: {
-    //           show: true,
-    //         },
-    //         axisLabel: {
-    //           formatter: '{value} °F',
-    //         },
-    //       },
-    //       {
-    //         type: 'value',
-    //         name: 'Precipitation',
-    //         position: 'right',
-    //         min: 0,
-    //         max: 2,
-    //         axisLine: {
-    //           show: true,
-    //         },
-    //         axisLabel: {
-    //           formatter: '{value} "',
-    //         },
-    //       },
-    //     ],
-    //     series: [
-    //       {
-    //         name: 'Precipitation',
-    //         type: 'bar',
-    //         data: weatherStatsArray.map((w) => w.precipitation),
-    //         yAxisIndex: 1,
-    //       },
-    //       {
-    //         name: 'Min Temp',
-    //         type: 'line',
-    //         data: weatherStatsArray.map((w) => w.mintemp),
-    //       },
-    //       {
-    //         name: 'Max Temp',
-    //         type: 'line',
-    //         data: weatherStatsArray.map((w) => w.maxtemp),
-    //       },
-    //     ],
-    //   };
+    const colors = [
+      '#BAD0D9',
+      '#8BB4C5',
+      '#5C94AB',
+      '#3F809A',
+      '#2A708D',
+      '#1E647F',
+      '#0D546F',
+    ];
 
     this.weatherOptions = {
       title: {},
-
       tooltip: {},
       legend: {
-        show: false,
+        show: true,
+        bottom: 0,
       },
       xAxis: {
         data: ['Precipitation'],
       },
-      yAxis: { min: 0, max: 1 },
-      series: [
-        {
-          name: '7 Days ago: ' + weatherStatsArray[6].date.toLocaleDateString(),
+      yAxis: {
+        min: 0,
+        max: 1,
+      },
+      series: weatherStatsArray
+        .map((w, i) => ({
+          name: `${7 - i} Days ago: ${w.date.toLocaleDateString()}`,
           type: 'bar',
           stack: 'total',
-          data: [weatherStatsArray[6].precipitation],
+          data: [w.precipitation],
           itemStyle: {
-            color: '#BAD0D9',
+            color: colors[i],
           },
           label: {
-            show: weatherStatsArray[6].precipitation !== 0,
+            show: w.precipitation !== 0,
             position: 'inside',
           },
-        },
-        {
-          name: '6 Days ago: ' + weatherStatsArray[5].date.toLocaleDateString(),
-          type: 'bar',
-          stack: 'total',
-          data: [weatherStatsArray[5].precipitation],
-          itemStyle: {
-            color: '#8BB4C5',
-          },
-          label: {
-            show: weatherStatsArray[5].precipitation !== 0,
-            position: 'inside',
-          },
-        },
-        {
-          name: '5 Days ago: ' + weatherStatsArray[4].date.toLocaleDateString(),
-          type: 'bar',
-          stack: 'total',
-          data: [weatherStatsArray[4].precipitation],
-          itemStyle: {
-            color: '#5C94AB',
-          },
-          label: {
-            show: weatherStatsArray[4].precipitation !== 0,
-            position: 'inside',
-          },
-        },
-        {
-          name: '4 Days ago: ' + weatherStatsArray[3].date.toLocaleDateString(),
-          type: 'bar',
-          stack: 'total',
-          data: [weatherStatsArray[3].precipitation],
-          itemStyle: {
-            color: '#3F809A',
-          },
-          label: {
-            show: weatherStatsArray[3].precipitation !== 0,
-            position: 'inside',
-          },
-        },
-        {
-          name: '3 Days ago: ' + weatherStatsArray[2].date.toLocaleDateString(),
-          type: 'bar',
-          stack: 'total',
-          data: [weatherStatsArray[2].precipitation],
-          itemStyle: {
-            color: '#2A708D',
-          },
-          label: {
-            show: weatherStatsArray[2].precipitation !== 0,
-            position: 'inside',
-          },
-        },
-        {
-          name: '2 Days ago: ' + weatherStatsArray[1].date.toLocaleDateString(),
-          type: 'bar',
-          stack: 'total',
-          data: [weatherStatsArray[1].precipitation],
-          itemStyle: {
-            color: '#1E647F',
-          },
-          label: {
-            show: weatherStatsArray[1].precipitation !== 0,
-            position: 'inside',
-          },
-        },
-        {
-          name: '1 Day ago: ' + weatherStatsArray[0].date.toLocaleDateString(),
-          type: 'bar',
-          stack: 'total',
-          data: [weatherStatsArray[0].precipitation],
-          itemStyle: {
-            color: '#0D546F',
-          },
-          label: {
-            show: weatherStatsArray[0].precipitation !== 0,
-            position: 'inside',
-          },
-        },
-      ],
+        }))
+        .filter((s) => s.data[0] > 0),
     };
   }
 }
