@@ -1,9 +1,7 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-3"></div>
-
-    <div class="col-md-6">
-      <h3 class="text-center my-4">DoesMyGardenNeedWatering:</h3>
+    <div id="searchContainer" class="col-md-4">
+      <h1 class="my-4">Does My Garden Need Watering?</h1>
       <form
         [formGroup]="weatherSearchForm"
         (ngSubmit)="sendToWS(weatherSearchForm.value)"
@@ -14,41 +12,39 @@
             type="text"
             id="weatherLocation"
             aria-describedby="weatherLocation"
-            placeholder="Please input a Location"
+            placeholder="My City"
             formControlName="location"
           />
         </div>
-        <div class="text-center">
-          <button type="submit" class="btn btn-success btn-md my-4">
+        <div>
+          <button type="submit" class="btn btn-secondary btn-md my-4">
             Should I Water My Garden?
           </button>
         </div>
       </form>
     </div>
-  </div>
-  <div class="col-md-3"></div>
 
-  <div class="row">
-    <div class="col-md-2"></div>
-
-    <div *ngIf="searchClicked" class="col-md-3">
+    <div *ngIf="searchClicked" id="rainInfo" class="col-md-3">
       <h2>Precipitation last 7 days:</h2>
       <h1>{{ this.totalPrecipitation }}"</h1>
-      <h3 *ngIf="totalPrecipitation < 0.5">
-        garden needs water about {{ 1 - this.totalPrecipitation }}"
-      </h3>
+      <h3 *ngIf="totalPrecipitation < 0.5">My garden needs water this week.</h3>
+      <p *ngIf="totalPrecipitation < 0.5">
+        Try and water about {{ 1 - this.totalPrecipitation }}"
+      </p>
       <h3 *ngIf="totalPrecipitation >= 0.5 && totalPrecipitation < 1">
-        garden may need less water about
-        {{ 1 - this.totalPrecipitation }}"
+        My garden may need less water this week.
       </h3>
-      <h3 *ngIf="totalPrecipitation > 1">garden does not need water.</h3>
+      <p *ngIf="totalPrecipitation >= 0.5 && totalPrecipitation < 1">
+        Try and water about {{ 1 - this.totalPrecipitation }}"
+      </p>
+
+      <h3 *ngIf="totalPrecipitation > 1">My garden does not need water.</h3>
     </div>
     <div
-      class="col-md-5"
-      style="width: 400px; height: 600px"
+      class="col-md-6"
+      style="width: 500px; height: 600px"
       echarts
       [options]="weatherOptions"
     ></div>
-    <div class="col-md-1"></div>
   </div>
 </div>

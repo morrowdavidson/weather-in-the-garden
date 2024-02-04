@@ -169,7 +169,7 @@ export class WeatherComponent implements OnInit {
         show: false,
       },
       xAxis: {
-        data: [],
+        data: ['Precipitation'],
       },
       yAxis: { min: 0, max: 1 },
       series: [
@@ -179,7 +179,7 @@ export class WeatherComponent implements OnInit {
           stack: 'total',
           data: [weatherStatsArray[6].precipitation],
           itemStyle: {
-            color: '#90BFFF',
+            color: '#BAD0D9',
           },
           label: {
             show: weatherStatsArray[6].precipitation !== 0,
@@ -192,7 +192,7 @@ export class WeatherComponent implements OnInit {
           stack: 'total',
           data: [weatherStatsArray[5].precipitation],
           itemStyle: {
-            color: '#79B2FF',
+            color: '#8BB4C5',
           },
           label: {
             show: weatherStatsArray[5].precipitation !== 0,
@@ -205,7 +205,7 @@ export class WeatherComponent implements OnInit {
           stack: 'total',
           data: [weatherStatsArray[4].precipitation],
           itemStyle: {
-            color: '#63A5FF',
+            color: '#5C94AB',
           },
           label: {
             show: weatherStatsArray[4].precipitation !== 0,
@@ -218,7 +218,7 @@ export class WeatherComponent implements OnInit {
           stack: 'total',
           data: [weatherStatsArray[3].precipitation],
           itemStyle: {
-            color: '#4794FB',
+            color: '#3F809A',
           },
           label: {
             show: weatherStatsArray[3].precipitation !== 0,
@@ -231,7 +231,7 @@ export class WeatherComponent implements OnInit {
           stack: 'total',
           data: [weatherStatsArray[2].precipitation],
           itemStyle: {
-            color: '#3083F3',
+            color: '#2A708D',
           },
           label: {
             show: weatherStatsArray[2].precipitation !== 0,
@@ -244,7 +244,7 @@ export class WeatherComponent implements OnInit {
           stack: 'total',
           data: [weatherStatsArray[1].precipitation],
           itemStyle: {
-            color: '#1873EE',
+            color: '#1E647F',
           },
           label: {
             show: weatherStatsArray[1].precipitation !== 0,
@@ -257,7 +257,7 @@ export class WeatherComponent implements OnInit {
           stack: 'total',
           data: [weatherStatsArray[0].precipitation],
           itemStyle: {
-            color: '#0060E1',
+            color: '#0D546F',
           },
           label: {
             show: weatherStatsArray[0].precipitation !== 0,
