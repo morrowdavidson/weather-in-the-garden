@@ -13,7 +13,7 @@
             type="text"
             id="weatherLocation"
             aria-describedby="weatherLocation"
-            placeholder="My City"
+            placeholder="City,State -or- Zip Code"
             formControlName="location"
           />
         </div>
@@ -27,17 +27,20 @@
 
     <div *ngIf="searchClicked" id="rainInfo" class="col-md-3">
       <h2>Precipitation last 7 days:</h2>
-      <p>In the city:</p>
       <h1>{{ this.totalPrecipitation }}"</h1>
       <h3 *ngIf="totalPrecipitation < 0.5">My garden needs water this week.</h3>
       <p *ngIf="totalPrecipitation < 0.5">
-        Try and water about {{ 1 - this.totalPrecipitation }}"
+        Try and water about
+        {{ ((1 - this.totalPrecipitation) / 2).toFixed(2) }}" split in two
+        waterings.
       </p>
       <h3 *ngIf="totalPrecipitation >= 0.5 && totalPrecipitation < 1">
         My garden may need less water this week.
       </h3>
       <p *ngIf="totalPrecipitation >= 0.5 && totalPrecipitation < 1">
-        Try and water about {{ 1 - this.totalPrecipitation }}"
+        Try and water about
+        {{ ((1 - this.totalPrecipitation) / 2).toFixed(2) }}" split in two
+        waterings.
       </p>
       <h3 *ngIf="totalPrecipitation > 1">My garden does not need water.</h3>
     </div>
@@ -47,6 +50,9 @@
     <div class="col-md-3"></div>
 
     <div *ngIf="searchClicked" class="col-md-6">
+      <p class="subtext">
+        Rain Data For: {{ this.weatherData?.request.query }}
+      </p>
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Rain Gauge</h5>
