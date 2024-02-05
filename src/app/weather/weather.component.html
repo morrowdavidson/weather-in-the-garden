@@ -27,11 +27,11 @@
 
     <div *ngIf="searchClicked" id="rainInfo" class="col-md-3">
       <h2>Precipitation last 7 days:</h2>
-      <h1>{{ this.totalPrecipitation }}"</h1>
+      <h1>{{ this.totalPrecipitation.toFixed(2) }}"</h1>
       <h3 *ngIf="totalPrecipitation < 0.5">My garden needs water this week.</h3>
       <p *ngIf="totalPrecipitation < 0.5">
         Try and water about
-        {{ ((1 - this.totalPrecipitation) / 2).toFixed(2) }}" split in two
+        {{ ((1 - this.totalPrecipitation) / 2).toFixed(2) }}" split into two
         waterings.
       </p>
       <h3 *ngIf="totalPrecipitation >= 0.5 && totalPrecipitation < 1">
@@ -39,7 +39,7 @@
       </h3>
       <p *ngIf="totalPrecipitation >= 0.5 && totalPrecipitation < 1">
         Try and water about
-        {{ ((1 - this.totalPrecipitation) / 2).toFixed(2) }}" split in two
+        {{ ((1 - this.totalPrecipitation) / 2).toFixed(2) }}" split into two
         waterings.
       </p>
       <h3 *ngIf="totalPrecipitation > 1">My garden does not need water.</h3>

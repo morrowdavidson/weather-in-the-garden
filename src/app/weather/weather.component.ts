@@ -125,7 +125,10 @@ export class WeatherComponent implements OnInit {
       },
       series: weatherStatsArray
         .map((w, i) => ({
-          name: `${7 - i} Days ago: ${w.date.toLocaleDateString()}`,
+          name: `${7 - i} Days ago: ${w.date.toLocaleDateString(undefined, {
+            month: '2-digit',
+            day: '2-digit',
+          })}`,
           type: 'bar',
           stack: 'total',
           data: [w.precipitation],
