@@ -62,4 +62,13 @@
     </div>
     <div class="col-md-3"></div>
   </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div *ngFor="let forecast of threeHourForecast | keyvalue" class="col-md-1">
+      <p>{{ forecast.value.hour }}</p>
+      <p>Precipitation:{{ forecast.value.precipitation }}</p>
+      <p>Temp:{{ forecast.value.maxtemp }}</p>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
 </div>
