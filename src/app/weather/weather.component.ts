@@ -134,6 +134,7 @@ export class WeatherComponent implements OnInit {
           data: [w.precipitation],
           itemStyle: {
             color: colors[i],
+            borderRadius: 20,
           },
           label: {
             show: w.precipitation !== 0,
