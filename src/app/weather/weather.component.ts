@@ -9,11 +9,10 @@ interface FormValues {
 
 interface WeatherStat {
   precipitation: number;
-  mintemp: number;
-  maxtemp: number;
-  date: Date;
-  formattedDate: string;
-  hour: string;
+}
+
+interface Forecast {
+  [key: string]: number;
 }
 
 @Component({
@@ -27,7 +26,7 @@ export class WeatherComponent implements OnInit {
   public forecastData: any;
   public totalPrecipitation: number = 0;
   // public historyStats: Record<string, WeatherStat> = {};
-  public threeHourForecast: Record<string, WeatherStat> = {};
+  public precipitationForecast: Record<string, WeatherStat> = {};
   public weatherOptions: any;
   public searchClicked: boolean = false;
 
@@ -87,8 +86,12 @@ export class WeatherComponent implements OnInit {
         let minutes = String(longDate.getMinutes()).padStart(2, '0');
 
         let formattedDate = `${month}/${day}/${year}`;
+        console.log(this.forecastData.list[i]);
+        let precipitation = 0;
 
-        let precipitation = this.forecastData.list[i].main.rain || 0;
+        if (this.forecastData.list[i].rain) {
+          precipitation = this.forecastData.list[i].rain['3h'] || 0;
+        }
         let mintemp = this.forecastData.list[i].main.temp_min;
         let maxtemp = this.forecastData.list[i].main.temp_max;
 
@@ -101,23 +104,21 @@ export class WeatherComponent implements OnInit {
           '/' +
           currentDate.getFullYear();
 
-        if (i <= 5) {
-          this.threeHourForecast[timestamp] = {
-            precipitation: precipitation,
-            mintemp: mintemp,
-            maxtemp: maxtemp,
-            formattedDate: formattedDate,
-            date: longDate,
-            hour: hours,
+        if (formattedDate === currentFormattedDate) {
+        } else if (!this.precipitationForecast[formattedDate]) {
+          let precipitationInInches = precipitation * 0.0393701;
+          this.precipitationForecast[formattedDate] = {
+            precipitation: precipitationInInches,
           };
+        } else {
+          let precipitationInInches = precipitation * 0.0393701;
+
+          this.precipitationForecast[formattedDate].precipitation +=
+            precipitationInInches;
         }
       }
-      //Getting forecast for the next 12 hours in 3 hour intervals
-      console.log(this.threeHourForecast);
-      for (let date in this.threeHourForecast) {
-        console.log(this.threeHourForecast[date]);
-      }
     });
+    console.log(this.precipitationForecast);
   }
 
   setOptions() {
