@@ -9,8 +9,8 @@ interface FormValues {
 
 interface WeatherStat {
   precipitation: number;
-  mintemp: number;
-  maxtemp: number;
+  mintemp?: number;
+  maxtemp?: number;
   date: Date;
 }
 
@@ -25,6 +25,8 @@ export class WeatherComponent implements OnInit {
   public forecastData: any;
   public totalPrecipitation: number = 0;
   public weatherStats: Record<string, WeatherStat> = {};
+  public precipitationForecast: Record<string, WeatherStat> = {};
+
   public weatherOptions: any;
   public searchClicked: boolean = false;
 
@@ -107,6 +109,7 @@ export class WeatherComponent implements OnInit {
           let precipitationInInches = precipitation * 0.0393701;
           this.precipitationForecast[formattedDate] = {
             precipitation: precipitationInInches,
+            date: longDate,
           };
         } else {
           let precipitationInInches = precipitation * 0.0393701;
