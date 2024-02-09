@@ -26,7 +26,7 @@ export class WeatherComponent implements OnInit {
   public totalPrecipitation: number = 0;
   public weatherStats: Record<string, WeatherStat> = {};
   public precipitationForecast: Record<string, WeatherStat> = {};
-
+  public locationData: any = {};
   public weatherOptions: any;
   public searchClicked: boolean = false;
 
@@ -43,6 +43,13 @@ export class WeatherComponent implements OnInit {
     //Get the historical weather data
     this.wsService.getHistorical(formValues.location).subscribe((data) => {
       this.weatherData = data;
+      console.log(this.weatherData);
+
+      this.locationData.name = this.weatherData.location.name;
+      this.locationData.region = this.weatherData.location.region;
+      this.locationData.country = this.weatherData.location.country;
+
+      console.log(this.locationData);
 
       const dateArray = Object.keys(this.weatherData.historical);
 
@@ -67,59 +74,6 @@ export class WeatherComponent implements OnInit {
       }
       this.setOptions();
     });
-
-    //Get the forcast weather data
-    this.wsService.getForecast(formValues.location).subscribe((data: any) => {
-      this.forecastData = data;
-
-      const foreCastArray = Object.keys(this.forecastData.list);
-
-      for (let i = 0; i < foreCastArray.length; i++) {
-        let timestamp = this.forecastData.list[i].dt;
-        let longDate = new Date(timestamp * 1000); // Create a new Date object
-
-        let day = String(longDate.getDate()).padStart(2, '0');
-        let month = String(longDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
-        let year = longDate.getFullYear();
-
-        let hours = String(longDate.getHours()).padStart(2, '0');
-        let minutes = String(longDate.getMinutes()).padStart(2, '0');
-
-        let formattedDate = `${month}/${day}/${year}`;
-        console.log(this.forecastData.list[i]);
-        let precipitation = 0;
-
-        if (this.forecastData.list[i].rain) {
-          precipitation = this.forecastData.list[i].rain['3h'] || 0;
-        }
-        let mintemp = this.forecastData.list[i].main.temp_min;
-        let maxtemp = this.forecastData.list[i].main.temp_max;
-
-        //get the current date and compare it to the date of the forecast
-        let currentDate = new Date();
-        let currentFormattedDate =
-          (currentDate.getMonth() + 1).toString().padStart(2, '0') +
-          '/' +
-          currentDate.getDate().toString().padStart(2, '0') +
-          '/' +
-          currentDate.getFullYear();
-
-        if (formattedDate === currentFormattedDate) {
-        } else if (!this.precipitationForecast[formattedDate]) {
-          let precipitationInInches = precipitation * 0.0393701;
-          this.precipitationForecast[formattedDate] = {
-            precipitation: precipitationInInches,
-            date: longDate,
-          };
-        } else {
-          let precipitationInInches = precipitation * 0.0393701;
-
-          this.precipitationForecast[formattedDate].precipitation +=
-            precipitationInInches;
-        }
-      }
-    });
-    console.log(this.precipitationForecast);
   }
 
   setOptions() {

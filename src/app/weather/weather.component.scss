@@ -9,10 +9,14 @@
 #rainInfo h2 {
   font-size: 1.5em;
   font-weight: 300;
+  color: #5597b1;
+  text-align: center;
 }
 #rainInfo h1 {
   font-size: 3em;
   font-weight: 300;
+  color: #fff;
+  text-align: center;
 }
 #rainInfo h3 {
   font-size: 1.25em;
@@ -23,6 +27,40 @@
   font-weight: 300;
   margin-top: 10px;
 }
-.card-title {
+.card-header {
   text-align: center;
+  color: #0c4b64;
+}
+
+.main-card {
+  background-color: #0c4b64;
+  padding: 50px;
+  min-width: 600px;
+}
+
+.btn-secondary {
+  margin-right: auto;
+  margin-left: auto;
+  width: 250px;
+}
+
+#weatherLocation {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: 300;
+  margin-top: 25px;
+}
+
+.search-button {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  margin-left: 10px;
+  margin-right: 10px;
+  color: #0c4b64;
+}
+
+.caption {
+  font-size: 1em;
+  margin-top: 10px;
+  color: #5597b1;
 }
