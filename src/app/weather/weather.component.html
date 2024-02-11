@@ -1,49 +1,49 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <h3 class="text-center my-4">Search for Weather:</h3>
-      <form
-        [formGroup]="weatherSearchForm"
-        (ngSubmit)="sendToWS(weatherSearchForm.value)"
-      >
-        <div class="form-group">
-          <input
-            class="form-control"
-            type="text"
-            id="weatherLocation"
-            aria-describedby="weatherLocation"
-            placeholder="Please input a Location"
-            formControlName="location"
-          />
-        </div>
-        <div class="text-center">
-          <button type="submit" class="btn btn-success btn-md my-4">
-            Search for the weather
-          </button>
-        </div>
-      </form>
-    </div>
-    <div class="col-md-6">
-      <h3 class="text-center my-4">Weather Details:</h3>
-      <p class="text-center">
-        Weather conditions:
-        {{ this.weatherData?.current.weather_descriptions[0] }}
-      </p>
-      <p class="text-center">
-        Temperature:
-        {{ this.weatherData?.current.temperature }} &deg;
-      </p>
+  <div class="row text-center">
+    <div class="col-md-3"></div>
+    <div id="searchContainer" class="col-md-6">
+      <div class="card main-card">
+        <div class="card-body">
+          <form
+            [formGroup]="weatherSearchForm"
+            (ngSubmit)="sendToWS(weatherSearchForm.value)"
+          >
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="text"
+                id="weatherLocation"
+                aria-describedby="weatherLocation"
+                placeholder="City -or- Zip Code"
+                formControlName="location"
+              />
+            </div>
+            <div>
+              <button type="submit" class="btn btn-light btn-md search-button">
+                How much did it rain?
+              </button>
+            </div>
+          </form>
 
-      <p class="text-center">
-        Feels like: {{ this.weatherData?.current.feelslike }} &deg;
-      </p>
+          <div *ngIf="searchClicked" id="rainInfo">
+            <h2>Precipitation last 7 days:</h2>
+            <h1>{{ this.totalPrecipitation.toFixed(2) }}"</h1>
+          </div>
+          <div *ngIf="searchClicked">
+            <div class="card">
+              <h5 class="card-header">Rain Gauge</h5>
 
-      <p class="text-center">
-        Total Percipitation Last 7 Days: {{ this.totalPrecipitation }}"
-      </p>
-      <p class="text-center">
-        Location Searched: {{ this.weatherData?.request.query }}
-      </p>
+              <div class="card-body">
+                <div echarts [options]="weatherOptions"></div>
+              </div>
+            </div>
+            <p class="caption">
+              {{ this.locationData.name }}, {{ this.locationData.region }},
+              {{ this.locationData.country }}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
