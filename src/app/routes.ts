@@ -1,4 +1,8 @@
 import { Routes } from '@angular/router';
-import { WeatherComponent } from './weather/weather.component';
+import { RainComponent } from './rain/rain.component';
+import { AdvancedViewComponent } from './advanced-view/advanced-view.component';
 
-export const allAppRoutes: Routes = [{ path: '', component: WeatherComponent }];
+export const allAppRoutes: Routes = [
+  { path: '', component: RainComponent },
+  { path: 'advanced', component: AdvancedViewComponent },
+];

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { WsService } from '../ws.service';
+import { ApiService } from '../api.service';
 import { format } from 'echarts';
 
 interface FormValues {
@@ -16,10 +16,10 @@ interface WeatherStat {
 
 @Component({
   selector: 'app-weather',
-  templateUrl: './weather.component.html',
-  styleUrls: ['./weather.component.scss'],
+  templateUrl: './rain.component.html',
+  styleUrls: ['./rain.component.scss'],
 })
-export class WeatherComponent implements OnInit {
+export class RainComponent implements OnInit {
   public weatherSearchForm!: FormGroup;
   public weatherData: any;
   public forecastData: any;
@@ -30,7 +30,10 @@ export class WeatherComponent implements OnInit {
   public weatherOptions: any;
   public searchClicked: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private wsService: WsService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private apiService: ApiService
+  ) {}
 
   ngOnInit() {
     this.weatherSearchForm = this.formBuilder.group({
@@ -41,7 +44,7 @@ export class WeatherComponent implements OnInit {
   sendToWS(formValues: FormValues) {
     this.searchClicked = true;
     //Get the historical weather data
-    this.wsService.getHistorical(formValues.location).subscribe((data) => {
+    this.apiService.getHistorical(formValues.location).subscribe((data) => {
       this.weatherData = data;
       console.log(this.weatherData);
 

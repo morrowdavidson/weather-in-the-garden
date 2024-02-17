@@ -1,20 +1,21 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { WsService } from './ws.service';
+import { ApiService } from './api.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { WeatherComponent } from './weather/weather.component';
+import { RainComponent } from './rain/rain.component';
 import { RouterModule } from '@angular/router';
 import { allAppRoutes } from './routes';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import * as echarts from 'echarts';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { AdvancedViewComponent } from './advanced-view/advanced-view.component';
 
 @NgModule({
-  declarations: [AppComponent, WeatherComponent],
+  declarations: [AppComponent, RainComponent, AdvancedViewComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -25,7 +26,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
       echarts,
     }),
   ],
-  providers: [WsService],
+  providers: [ApiService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

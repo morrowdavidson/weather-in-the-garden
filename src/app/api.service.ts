@@ -7,7 +7,7 @@ const openWeatherAPIKEY = environment.openWeatherAPIKEY;
 @Injectable({
   providedIn: 'root',
 })
-export class WsService {
+export class ApiService {
   constructor(private http: HttpClient) {}
 
   getLastSevenDays() {
