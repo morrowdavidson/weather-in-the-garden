@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiService } from '../api.service';
+
 import { format } from 'echarts';
 
 interface FormValues {
@@ -15,7 +16,7 @@ interface WeatherStat {
 }
 
 @Component({
-  selector: 'app-weather',
+  selector: 'app-rain',
   templateUrl: './rain.component.html',
   styleUrls: ['./rain.component.scss'],
 })
@@ -41,7 +42,7 @@ export class RainComponent implements OnInit {
     });
   }
 
-  sendToWS(formValues: FormValues) {
+  submitSearch(formValues: FormValues) {
     this.searchClicked = true;
     //Get the historical weather data
     this.apiService.getHistorical(formValues.location).subscribe((data) => {

@@ -13,9 +13,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import * as echarts from 'echarts';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { AdvancedViewComponent } from './advanced-view/advanced-view.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { BasicViewComponent } from './basic-view/basic-view.component';
+import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 
 @NgModule({
-  declarations: [AppComponent, RainComponent, AdvancedViewComponent],
+  declarations: [AppComponent, RainComponent, AdvancedViewComponent, NavBarComponent, BasicViewComponent, AdvancedSearchComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RainComponent } from './rain/rain.component';
 import { AdvancedViewComponent } from './advanced-view/advanced-view.component';
+import { BasicViewComponent } from './basic-view/basic-view.component';
 
 const routes: Routes = [
-  { path: '', component: RainComponent },
+  { path: '', component: BasicViewComponent },
   { path: 'advanced', component: AdvancedViewComponent },
 ];
 

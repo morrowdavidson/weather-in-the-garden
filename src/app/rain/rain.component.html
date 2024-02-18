@@ -6,7 +6,7 @@
         <div class="card-body">
           <form
             [formGroup]="weatherSearchForm"
-            (ngSubmit)="sendToWS(weatherSearchForm.value)"
+            (ngSubmit)="submitSearch(weatherSearchForm.value)"
           >
             <div class="form-group">
               <input
@@ -47,10 +47,3 @@
     </div>
   </div>
 </div>
-
-<a routerLink="/advanced" routerLinkActive="active" ariaCurrentWhenActive="page"
-  >Advanced View</a
->
-<a routerLink="" routerLinkActive="active" ariaCurrentWhenActive="page"
-  >Basic View</a
->
