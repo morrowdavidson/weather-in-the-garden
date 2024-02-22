@@ -30,7 +30,7 @@ export class ApiService {
     return dates;
   }
 
-  getHistorical(location: string) {
+  getHistorical(location: string, interval: string) {
     const dates = this.getLastSevenDays();
 
     return this.http.get(
@@ -40,7 +40,9 @@ export class ApiService {
         location +
         '&historical_date=' +
         dates +
-        '&hourly=1&interval=24&units=f'
+        '&hourly=1&interval=' +
+        interval +
+        '&units=f'
     );
   }
 

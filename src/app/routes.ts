@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { RainComponent } from './rain/rain.component';
 import { AdvancedViewComponent } from './advanced-view/advanced-view.component';
+import { BasicViewComponent } from './basic-view/basic-view.component';
 
 export const allAppRoutes: Routes = [
-  { path: '', component: RainComponent },
+  { path: '', component: BasicViewComponent },
   { path: 'advanced', component: AdvancedViewComponent },
 ];

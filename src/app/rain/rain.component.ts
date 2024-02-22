@@ -45,39 +45,41 @@ export class RainComponent implements OnInit {
   submitSearch(formValues: FormValues) {
     this.searchClicked = true;
     //Get the historical weather data
-    this.apiService.getHistorical(formValues.location).subscribe((data) => {
-      this.weatherData = data;
-      console.log(this.weatherData);
+    this.apiService
+      .getHistorical(formValues.location, '24')
+      .subscribe((data) => {
+        this.weatherData = data;
+        console.log(this.weatherData);
 
-      this.locationData.name = this.weatherData.location.name;
-      this.locationData.region = this.weatherData.location.region;
-      this.locationData.country = this.weatherData.location.country;
+        this.locationData.name = this.weatherData.location.name;
+        this.locationData.region = this.weatherData.location.region;
+        this.locationData.country = this.weatherData.location.country;
 
-      console.log(this.locationData);
+        console.log(this.locationData);
 
-      const dateArray = Object.keys(this.weatherData.historical);
+        const dateArray = Object.keys(this.weatherData.historical);
 
-      this.totalPrecipitation = 0;
+        this.totalPrecipitation = 0;
 
-      for (let i = 0; i < dateArray.length; i++) {
-        let day = 'day' + (-i - 1); // Create a string for the day
-        let precipitation =
-          this.weatherData.historical[dateArray[i]].hourly[0].precip;
-        let mintemp = this.weatherData.historical[dateArray[i]].mintemp;
-        let maxtemp = this.weatherData.historical[dateArray[i]].maxtemp;
-        let date = new Date(dateArray[i]);
+        for (let i = 0; i < dateArray.length; i++) {
+          let day = 'day' + (-i - 1); // Create a string for the day
+          let precipitation =
+            this.weatherData.historical[dateArray[i]].hourly[0].precip;
+          let mintemp = this.weatherData.historical[dateArray[i]].mintemp;
+          let maxtemp = this.weatherData.historical[dateArray[i]].maxtemp;
+          let date = new Date(dateArray[i]);
 
-        this.totalPrecipitation += precipitation;
-        // Create a new property in weatherStats for the day and assign it the precipitation and temperature
-        this.weatherStats[day] = {
-          precipitation: precipitation,
-          mintemp: mintemp,
-          maxtemp: maxtemp,
-          date: date,
-        };
-      }
-      this.setOptions();
-    });
+          this.totalPrecipitation += precipitation;
+          // Create a new property in weatherStats for the day and assign it the precipitation and temperature
+          this.weatherStats[day] = {
+            precipitation: precipitation,
+            mintemp: mintemp,
+            maxtemp: maxtemp,
+            date: date,
+          };
+        }
+        this.setOptions();
+      });
   }
 
   setOptions() {
