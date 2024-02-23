@@ -74,6 +74,8 @@ export class AdvancedSearchComponent implements OnInit {
             date: date,
           };
         }
+        console.log(this.weatherStats);
+
         // this.setOptions();
       });
   }
