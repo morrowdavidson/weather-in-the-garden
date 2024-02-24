@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiService } from '../api.service';
+import { WeatherDataService } from '../weather-data-service.service';
 
 interface FormValues {
   location: string;
@@ -31,13 +32,16 @@ export class AdvancedSearchComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private weatherDataService: WeatherDataService
   ) {}
+
   ngOnInit() {
     this.advancedSearchForm = this.formBuilder.group({
       location: [''],
     });
   }
+
   submitSearch(formValues: FormValues) {
     this.searchClicked = true;
     //Get the historical weather data
@@ -53,30 +57,31 @@ export class AdvancedSearchComponent implements OnInit {
 
         console.log(this.locationData);
 
-        const dateArray = Object.keys(this.weatherData.historical);
-
-        this.totalPrecipitation = 0;
-
-        for (let i = 0; i < dateArray.length; i++) {
-          let day = 'day' + (-i - 1); // Create a string for the day
-          let precipitation =
-            this.weatherData.historical[dateArray[i]].hourly[0].precip;
-          let mintemp = this.weatherData.historical[dateArray[i]].mintemp;
-          let maxtemp = this.weatherData.historical[dateArray[i]].maxtemp;
-          let date = new Date(dateArray[i]);
-
-          this.totalPrecipitation += precipitation;
-          // Create a new property in weatherStats for the day and assign it the precipitation and temperature
-          this.weatherStats[day] = {
-            precipitation: precipitation,
-            mintemp: mintemp,
-            maxtemp: maxtemp,
-            date: date,
-          };
-        }
+        this.calculateWeatherStats(this.weatherData.historical);
         console.log(this.weatherStats);
-
-        // this.setOptions();
       });
+  }
+
+  calculateWeatherStats(historicalData: any): void {
+    const dateArray = Object.keys(historicalData);
+
+    this.totalPrecipitation = 0;
+
+    for (let i = 0; i < dateArray.length; i++) {
+      let day = 'day' + (-i - 1); // Create a string for the day
+      let precipitation = historicalData[dateArray[i]].hourly[0].precip;
+      let mintemp = historicalData[dateArray[i]].mintemp;
+      let maxtemp = historicalData[dateArray[i]].maxtemp;
+      let date = new Date(dateArray[i]);
+
+      this.totalPrecipitation += precipitation;
+      // Create a new property in weatherStats for the day and assign it the precipitation and temperature
+      this.weatherStats[day] = {
+        precipitation: precipitation,
+        mintemp: mintemp,
+        maxtemp: maxtemp,
+        date: date,
+      };
+    }
   }
 }
