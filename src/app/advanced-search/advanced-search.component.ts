@@ -5,6 +5,7 @@ import { WeatherDataService } from '../weather-data-service.service';
 
 interface FormValues {
   location: string;
+  interval: string;
 }
 
 interface WeatherStat {
@@ -39,14 +40,16 @@ export class AdvancedSearchComponent implements OnInit {
   ngOnInit() {
     this.advancedSearchForm = this.formBuilder.group({
       location: [''],
+      interval: ['24'],
     });
   }
 
   submitSearch(formValues: FormValues) {
+    console.log(formValues);
     this.searchClicked = true;
     //Get the historical weather data
     this.apiService
-      .getHistorical(formValues.location, '24')
+      .getHistorical(formValues.location, formValues.interval)
       .subscribe((data) => {
         this.weatherData = data;
         console.log(this.weatherData);
@@ -69,15 +72,19 @@ export class AdvancedSearchComponent implements OnInit {
 
     for (let i = 0; i < dateArray.length; i++) {
       let day = 'day' + (-i - 1); // Create a string for the day
-      let precipitation = historicalData[dateArray[i]].hourly[0].precip;
       let mintemp = historicalData[dateArray[i]].mintemp;
       let maxtemp = historicalData[dateArray[i]].maxtemp;
       let date = new Date(dateArray[i]);
 
-      this.totalPrecipitation += precipitation;
+      let dailyPrecipitation = 0;
+      for (let j = 0; j < historicalData[dateArray[i]].hourly.length; j++) {
+        dailyPrecipitation += historicalData[dateArray[i]].hourly[j].precip;
+      }
+
+      this.totalPrecipitation += dailyPrecipitation;
       // Create a new property in weatherStats for the day and assign it the precipitation and temperature
       this.weatherStats[day] = {
-        precipitation: precipitation,
+        precipitation: dailyPrecipitation,
         mintemp: mintemp,
         maxtemp: maxtemp,
         date: date,
