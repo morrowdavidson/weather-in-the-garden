@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { ApiService } from './api.service';
+import { ApiService } from './services/api.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,7 +18,14 @@ import { BasicViewComponent } from './basic-view/basic-view.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 
 @NgModule({
-  declarations: [AppComponent, RainComponent, AdvancedViewComponent, NavBarComponent, BasicViewComponent, AdvancedSearchComponent],
+  declarations: [
+    AppComponent,
+    RainComponent,
+    AdvancedViewComponent,
+    NavBarComponent,
+    BasicViewComponent,
+    AdvancedSearchComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

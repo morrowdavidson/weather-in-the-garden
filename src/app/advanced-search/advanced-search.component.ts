@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ApiService } from '../api.service';
-import { WeatherDataService } from '../weather-data-service.service';
+import { ApiService } from '../services/api.service';
+import { WeatherDataService } from '../services/weather-data-service.service';
 
 interface FormValues {
   location: string;
