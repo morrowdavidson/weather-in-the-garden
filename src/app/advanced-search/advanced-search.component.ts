@@ -9,10 +9,10 @@ interface FormValues {
 }
 
 interface WeatherStat {
-  precipitation: number;
+  dailyPrecipitation: number;
   mintemp?: number;
   maxtemp?: number;
-  date: Date;
+  date: string;
 }
 
 @Component({
@@ -44,51 +44,107 @@ export class AdvancedSearchComponent implements OnInit {
     });
   }
 
+  // submitSearch(formValues: FormValues) {
+  //   console.log(formValues);
+  //   this.searchClicked = true;
+  //   //Get the historical weather data
+  //   this.apiService
+  //     .getHistorical(formValues.location, formValues.interval)
+  //     .subscribe((data) => {
+  //       this.weatherData = data;
+  //       console.log(this.weatherData);
+
+  //       this.locationData.name = this.weatherData.location.name;
+  //       this.locationData.region = this.weatherData.location.region;
+  //       this.locationData.country = this.weatherData.location.country;
+
+  //       console.log(this.locationData);
+
+  //       this.calculateWeatherStats(this.weatherData.historical);
+  //       console.log(this.weatherStats);
+  //     });
+  // }
+
+  // calculateWeatherStats(historicalData: any): void {
+  //   const dateArray = Object.keys(historicalData);
+
+  //   this.totalPrecipitation = 0;
+
+  //   for (let i = 0; i < dateArray.length; i++) {
+  //     let day = 'day' + (-i - 1); // Create a string for the day
+  //     let mintemp = historicalData[dateArray[i]].mintemp;
+  //     let maxtemp = historicalData[dateArray[i]].maxtemp;
+  //     let date = new Date(dateArray[i]);
+
+  //     let dailyPrecipitation = 0;
+  //     for (let j = 0; j < historicalData[dateArray[i]].hourly.length; j++) {
+  //       dailyPrecipitation += historicalData[dateArray[i]].hourly[j].precip;
+  //     }
+
+  //     this.totalPrecipitation += dailyPrecipitation;
+  //     // Create a new property in weatherStats for the day and assign it the precipitation and temperature
+  //     this.weatherStats[day] = {
+  //       precipitation: dailyPrecipitation,
+  //       mintemp: mintemp,
+  //       maxtemp: maxtemp,
+  //       date: date,
+  //     };
+  //   }
+  // }
+
   submitSearch(formValues: FormValues) {
-    console.log(formValues);
     this.searchClicked = true;
-    //Get the historical weather data
+    // Get the historical weather data
     this.apiService
       .getHistorical(formValues.location, formValues.interval)
       .subscribe((data) => {
         this.weatherData = data;
-        console.log(this.weatherData);
+        this.processWeatherData();
 
-        this.locationData.name = this.weatherData.location.name;
-        this.locationData.region = this.weatherData.location.region;
-        this.locationData.country = this.weatherData.location.country;
-
-        console.log(this.locationData);
-
-        this.calculateWeatherStats(this.weatherData.historical);
-        console.log(this.weatherStats);
+        console.log('weatherData', this.weatherData);
       });
   }
 
-  calculateWeatherStats(historicalData: any): void {
-    const dateArray = Object.keys(historicalData);
+  processWeatherData() {
+    const { name, region, country } = this.weatherData.location; // Destructure the location object
+    this.locationData = { name, region, country }; // Assign the location data to the locationData object
+
+    const dateArray = Object.keys(this.weatherData.historical);
+    console.log('dateArray', dateArray);
 
     this.totalPrecipitation = 0;
+    let dailyPrecipitation = 0;
 
     for (let i = 0; i < dateArray.length; i++) {
-      let day = 'day' + (-i - 1); // Create a string for the day
-      let mintemp = historicalData[dateArray[i]].mintemp;
-      let maxtemp = historicalData[dateArray[i]].maxtemp;
-      let date = new Date(dateArray[i]);
-
-      let dailyPrecipitation = 0;
-      for (let j = 0; j < historicalData[dateArray[i]].hourly.length; j++) {
-        dailyPrecipitation += historicalData[dateArray[i]].hourly[j].precip;
+      const day = 'day(' + (-i - 1) + ')'; // Create an internal string for the day... day(-1) = yesterday; day(-2) = 2 days ago
+      const { hourly, mintemp, maxtemp } =
+        this.weatherData.historical[dateArray[i]]; // Destructure the hourly, mintemp, and maxtemp properties from the historical object
+      dailyPrecipitation = 0; // Reset daily precipitation for each day
+      for (
+        let j = 0;
+        j < this.weatherData.historical[dateArray[i]].hourly.length;
+        j++
+      ) {
+        dailyPrecipitation +=
+          this.weatherData.historical[dateArray[i]].hourly[j].precip;
       }
+      // Now dailyPrecipitation contains the total precipitation for the day
+
+      console.log(
+        `Total precipitation for ${dateArray[i]}: ${dailyPrecipitation}`
+      );
+
+      const date = dateArray[i];
 
       this.totalPrecipitation += dailyPrecipitation;
       // Create a new property in weatherStats for the day and assign it the precipitation and temperature
       this.weatherStats[day] = {
-        precipitation: dailyPrecipitation,
-        mintemp: mintemp,
-        maxtemp: maxtemp,
-        date: date,
+        dailyPrecipitation,
+        mintemp,
+        maxtemp,
+        date,
       };
     }
+    console.log('weatherStats', this.weatherStats);
   }
 }
