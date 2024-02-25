@@ -1,9 +1,18 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WeatherDataService {
-  constructor(private apiService: ApiService) {}
+  private weatherInfo: any;
+
+  constructor() {}
+
+  setWeatherInfo(stats: any) {
+    this.weatherInfo = stats;
+  }
+
+  getWeatherInfo() {
+    return this.weatherInfo;
+  }
 }

@@ -25,7 +25,7 @@ export class AdvancedSearchComponent implements OnInit {
   public weatherData: any;
   public forecastData: any;
   public totalPrecipitation: number = 0;
-  public weatherStats: Record<string, WeatherStat> = {};
+  public weatherInfo: Record<string, WeatherStat> = {};
   public precipitationForecast: Record<string, WeatherStat> = {};
   public locationData: any = {};
   public weatherOptions: any;
@@ -44,59 +44,11 @@ export class AdvancedSearchComponent implements OnInit {
     });
   }
 
-  // submitSearch(formValues: FormValues) {
-  //   console.log(formValues);
-  //   this.searchClicked = true;
-  //   //Get the historical weather data
-  //   this.apiService
-  //     .getHistorical(formValues.location, formValues.interval)
-  //     .subscribe((data) => {
-  //       this.weatherData = data;
-  //       console.log(this.weatherData);
-
-  //       this.locationData.name = this.weatherData.location.name;
-  //       this.locationData.region = this.weatherData.location.region;
-  //       this.locationData.country = this.weatherData.location.country;
-
-  //       console.log(this.locationData);
-
-  //       this.calculateWeatherStats(this.weatherData.historical);
-  //       console.log(this.weatherStats);
-  //     });
-  // }
-
-  // calculateWeatherStats(historicalData: any): void {
-  //   const dateArray = Object.keys(historicalData);
-
-  //   this.totalPrecipitation = 0;
-
-  //   for (let i = 0; i < dateArray.length; i++) {
-  //     let day = 'day' + (-i - 1); // Create a string for the day
-  //     let mintemp = historicalData[dateArray[i]].mintemp;
-  //     let maxtemp = historicalData[dateArray[i]].maxtemp;
-  //     let date = new Date(dateArray[i]);
-
-  //     let dailyPrecipitation = 0;
-  //     for (let j = 0; j < historicalData[dateArray[i]].hourly.length; j++) {
-  //       dailyPrecipitation += historicalData[dateArray[i]].hourly[j].precip;
-  //     }
-
-  //     this.totalPrecipitation += dailyPrecipitation;
-  //     // Create a new property in weatherStats for the day and assign it the precipitation and temperature
-  //     this.weatherStats[day] = {
-  //       precipitation: dailyPrecipitation,
-  //       mintemp: mintemp,
-  //       maxtemp: maxtemp,
-  //       date: date,
-  //     };
-  //   }
-  // }
-
   submitSearch(formValues: FormValues) {
     this.searchClicked = true;
     // Get the historical weather data
     this.apiService
-      .getHistorical(formValues.location, formValues.interval)
+      .getHistorical(formValues.location, '24')
       .subscribe((data) => {
         this.weatherData = data;
         this.processWeatherData();
@@ -137,14 +89,15 @@ export class AdvancedSearchComponent implements OnInit {
       const date = dateArray[i];
 
       this.totalPrecipitation += dailyPrecipitation;
-      // Create a new property in weatherStats for the day and assign it the precipitation and temperature
-      this.weatherStats[day] = {
+      // Create a new property in weatherInfo for the day and assign it the precipitation and temperature
+      this.weatherInfo[day] = {
         dailyPrecipitation,
         mintemp,
         maxtemp,
         date,
       };
     }
-    console.log('weatherStats', this.weatherStats);
+    this.weatherDataService.setWeatherInfo(this.weatherInfo);
+    console.log('weatherInfo', this.weatherInfo);
   }
 }
