@@ -12,7 +12,7 @@ interface WeatherStat {
   precipitation: number;
   mintemp?: number;
   maxtemp?: number;
-  date: Date;
+  date: string;
 }
 
 @Component({
@@ -44,46 +44,48 @@ export class RainComponent implements OnInit {
 
   submitSearch(formValues: FormValues) {
     this.searchClicked = true;
-    //Get the historical weather data
+    // Get the historical weather data
     this.apiService
       .getHistorical(formValues.location, '24')
       .subscribe((data) => {
         this.weatherData = data;
-        console.log(this.weatherData);
-
-        this.locationData.name = this.weatherData.location.name;
-        this.locationData.region = this.weatherData.location.region;
-        this.locationData.country = this.weatherData.location.country;
-
-        console.log(this.locationData);
-
-        const dateArray = Object.keys(this.weatherData.historical);
-
-        this.totalPrecipitation = 0;
-
-        for (let i = 0; i < dateArray.length; i++) {
-          let day = 'day' + (-i - 1); // Create a string for the day
-          let precipitation =
-            this.weatherData.historical[dateArray[i]].hourly[0].precip;
-          let mintemp = this.weatherData.historical[dateArray[i]].mintemp;
-          let maxtemp = this.weatherData.historical[dateArray[i]].maxtemp;
-          let date = new Date(dateArray[i]);
-
-          this.totalPrecipitation += precipitation;
-          // Create a new property in weatherStats for the day and assign it the precipitation and temperature
-          this.weatherStats[day] = {
-            precipitation: precipitation,
-            mintemp: mintemp,
-            maxtemp: maxtemp,
-            date: date,
-          };
-        }
+        this.processWeatherData();
         this.setOptions();
+
+        console.log('weatherData', this.weatherData);
       });
   }
 
+  processWeatherData() {
+    const { name, region, country } = this.weatherData.location;
+    this.locationData = { name, region, country };
+
+    const dateArray = Object.keys(this.weatherData.historical);
+    console.log('dateArray', dateArray);
+
+    this.totalPrecipitation = 0;
+
+    for (let i = 0; i < dateArray.length; i++) {
+      const day = 'day(' + (-i - 1) + ')'; // Create an internal string for the day... day(-1) = yesterday; day(-2) = 2 days ago
+      const { hourly, mintemp, maxtemp } =
+        this.weatherData.historical[dateArray[i]];
+      const precipitation = hourly[0].precip;
+      const date = dateArray[i];
+
+      this.totalPrecipitation += precipitation;
+      // Create a new property in weatherStats for the day and assign it the precipitation and temperature
+      this.weatherStats[day] = {
+        precipitation,
+        mintemp,
+        maxtemp,
+        date,
+      };
+    }
+    console.log('weatherStats', this.weatherStats);
+  }
+
   setOptions() {
-    const weatherStatsArray = Object.values(this.weatherStats);
+    const weatherStatsArray = Object.values(this.weatherStats).reverse();
     const colors = [
       '#BAD0D9',
       '#8BB4C5',
@@ -106,14 +108,11 @@ export class RainComponent implements OnInit {
       },
       yAxis: {
         min: 0,
-        max: 1,
+        max: Math.max(this.totalPrecipitation, 1), //if precipitation is less then 1, set the max to 1
       },
       series: weatherStatsArray
         .map((w, i) => ({
-          name: `${7 - i} Days ago: ${w.date.toLocaleDateString(undefined, {
-            month: '2-digit',
-            day: '2-digit',
-          })}`,
+          name: `${7 - i} Days ago: ${w.date.substring(5)}`, //calculate number of days ago and strip off the year
           type: 'bar',
           stack: 'total',
           data: [w.precipitation],

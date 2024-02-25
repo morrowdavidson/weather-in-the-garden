@@ -12,7 +12,7 @@ export class ApiService {
 
   getLastSevenDays() {
     let dates = '';
-    for (let i = 0; i < 7; i++) {
+    for (let i = 1; i < 8; i++) {
       let d = new Date();
       d.setDate(d.getDate() - i);
       let month = '' + (d.getMonth() + 1);
@@ -23,10 +23,11 @@ export class ApiService {
       if (day.length < 2) day = '0' + day;
 
       dates += year + '-' + month + '-' + day;
-      if (i < 6)
+      if (i < 7)
         // Don't add a semicolon after the last date
         dates += ';';
     }
+    console.log(dates);
     return dates;
   }
 
