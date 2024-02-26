@@ -17,12 +17,13 @@ export class AdvancedViewComponent {
   public weatherInfo: Record<string, WeatherInfo> = {};
   public weatherOptions: any;
   public weatherInfoArray: any = [];
+  public rainOptions: any;
 
   constructor(private weatherDataService: WeatherDataService) {}
 
   setOptions() {
     const getWeatherInfo = this.weatherDataService.getWeatherInfo();
-    const weatherInfoArray = Object.values(getWeatherInfo).reverse();
+    const weatherInfoArray = Object.values(getWeatherInfo.days).reverse();
     console.log('weatherInfoArray', weatherInfoArray);
     let dateData = [];
     let precipitationData = [];
@@ -89,6 +90,23 @@ export class AdvancedViewComponent {
           yAxisIndex: 0,
         },
       ],
+    };
+
+    this.rainOptions = {
+      title: {},
+      tooltip: {},
+      legend: {
+        show: true,
+        bottom: 0,
+      },
+      xAxis: {
+        data: ['Precipitation'],
+      },
+      yAxis: {
+        min: 0,
+        max: Math.max(getWeatherInfo.totalPrecipitation, 1), //if precipitation is less then 1, set the max to 1
+      },
+      series: [],
     };
   }
 }

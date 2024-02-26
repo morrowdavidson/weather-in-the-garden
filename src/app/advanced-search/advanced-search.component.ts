@@ -10,10 +10,14 @@ interface FormValues {
 }
 
 interface WeatherInfo {
-  dailyPrecipitation: number;
+  [key: string]: any;
+  dailyPrecipitation?: number;
   mintemp?: number;
   maxtemp?: number;
-  date: string;
+  date?: string;
+}
+interface WeatherInfoWithTotal extends WeatherInfo {
+  totalPrecipitation?: number;
 }
 
 @Component({
@@ -26,7 +30,7 @@ export class AdvancedSearchComponent implements OnInit {
   public weatherData: any;
   public forecastData: any;
   public totalPrecipitation: number = 0;
-  public weatherInfo: Record<string, WeatherInfo> = {};
+  public weatherInfo: Record<any, WeatherInfoWithTotal> = { days: {} };
   public precipitationForecast: Record<string, WeatherInfo> = {};
   public locationData: any = {};
   public weatherOptions: any;
@@ -67,7 +71,7 @@ export class AdvancedSearchComponent implements OnInit {
     const dateArray = Object.keys(this.weatherData.historical);
     console.log('dateArray', dateArray);
 
-    this.totalPrecipitation = 0;
+    let totalPrecipitation = 0;
     let dailyPrecipitation = 0;
 
     for (let i = 0; i < dateArray.length; i++) {
@@ -91,15 +95,20 @@ export class AdvancedSearchComponent implements OnInit {
 
       const date = dateArray[i];
 
-      this.totalPrecipitation += dailyPrecipitation;
+      totalPrecipitation += dailyPrecipitation;
       // Create a new property in weatherInfo for the day and assign it the precipitation and temperature
-      this.weatherInfo[day] = {
+      this.weatherInfo['days'][day] = {
         dailyPrecipitation,
         mintemp,
         maxtemp,
         date,
       };
     }
+
+    this.weatherInfo['totalPrecipitation'] = {
+      totalPrecipitation,
+    };
+
     this.weatherDataService.setWeatherInfo(this.weatherInfo);
     console.log('weatherInfo', this.weatherInfo);
   }
