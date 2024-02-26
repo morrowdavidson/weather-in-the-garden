@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiService } from '../services/api.service';
-import { WeatherDataService } from '../services/weather-data-service.service';
+import { WeatherDataService } from '../services/weather-data.service';
+import { AdvancedViewComponent } from '../advanced-view/advanced-view.component';
 
 interface FormValues {
   location: string;
   interval: string;
 }
 
-interface WeatherStat {
+interface WeatherInfo {
   dailyPrecipitation: number;
   mintemp?: number;
   maxtemp?: number;
@@ -25,8 +26,8 @@ export class AdvancedSearchComponent implements OnInit {
   public weatherData: any;
   public forecastData: any;
   public totalPrecipitation: number = 0;
-  public weatherInfo: Record<string, WeatherStat> = {};
-  public precipitationForecast: Record<string, WeatherStat> = {};
+  public weatherInfo: Record<string, WeatherInfo> = {};
+  public precipitationForecast: Record<string, WeatherInfo> = {};
   public locationData: any = {};
   public weatherOptions: any;
   public searchClicked: boolean = false;
@@ -34,7 +35,8 @@ export class AdvancedSearchComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private apiService: ApiService,
-    private weatherDataService: WeatherDataService
+    private weatherDataService: WeatherDataService,
+    private advancedViewComponent: AdvancedViewComponent
   ) {}
 
   ngOnInit() {
@@ -52,6 +54,7 @@ export class AdvancedSearchComponent implements OnInit {
       .subscribe((data) => {
         this.weatherData = data;
         this.processWeatherData();
+        this.advancedViewComponent.setOptions();
 
         console.log('weatherData', this.weatherData);
       });

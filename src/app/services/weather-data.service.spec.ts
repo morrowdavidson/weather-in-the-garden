@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WeatherDataServiceService } from './weather-data-service.service';
+import { WeatherDataServiceService } from './weather-data.service';
 
 describe('WeatherDataServiceService', () => {
   let service: WeatherDataServiceService;
