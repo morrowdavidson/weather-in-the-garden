@@ -1,18 +1,28 @@
-<form
-  [formGroup]="advancedSearchForm"
-  (ngSubmit)="submitSearch(advancedSearchForm.value)"
->
-  <div class="input-group mb-3">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Zip Code -or- City"
-      id="weatherLocation"
-      formControlName="location"
-    />
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <form
+        [formGroup]="advancedSearchForm"
+        (ngSubmit)="submitSearch(advancedSearchForm.value)"
+      >
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Zip Code -or- City"
+            id="weatherLocation"
+            formControlName="location"
+          />
 
-    <button class="btn btn-outline-primary" type="submit" id="button-addon2">
-      Search
-    </button>
+          <button
+            class="btn btn-outline-light"
+            type="submit"
+            id="button-addon2"
+          >
+            Search
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
-</form>
+</div>
