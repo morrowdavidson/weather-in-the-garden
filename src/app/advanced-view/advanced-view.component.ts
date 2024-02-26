@@ -24,6 +24,17 @@ export class AdvancedViewComponent {
     const getWeatherInfo = this.weatherDataService.getWeatherInfo();
     const weatherInfoArray = Object.values(getWeatherInfo).reverse();
     console.log('weatherInfoArray', weatherInfoArray);
+    let dateData = [];
+    let precipitationData = [];
+    let mintempData = [];
+    let maxtempData = [];
+
+    for (let info of weatherInfoArray as WeatherInfo[]) {
+      dateData.push(info.date);
+      precipitationData.push(info.dailyPrecipitation);
+      mintempData.push(info.mintemp);
+      maxtempData.push(info.maxtemp);
+    }
 
     this.weatherOptions = {
       title: {},
@@ -33,7 +44,7 @@ export class AdvancedViewComponent {
         bottom: 0,
       },
       xAxis: {
-        data: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+        data: dateData,
       },
       yAxis: [
         {
@@ -62,19 +73,19 @@ export class AdvancedViewComponent {
         {
           name: 'Precipitation',
           type: 'bar',
-          data: weatherInfoArray.map((info: any) => info.dailyPrecipitation),
+          data: precipitationData,
           yAxisIndex: 1,
         },
         {
           name: 'Min Temp',
           type: 'line',
-          data: weatherInfoArray.map((info: any) => info.mintemp),
+          data: mintempData,
           yAxisIndex: 0,
         },
         {
           name: 'Max Temp',
           type: 'line',
-          data: weatherInfoArray.map((info: any) => info.maxtemp),
+          data: maxtempData,
           yAxisIndex: 0,
         },
       ],
