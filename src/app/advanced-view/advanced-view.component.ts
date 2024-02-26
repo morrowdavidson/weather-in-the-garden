@@ -22,13 +22,15 @@ export class AdvancedViewComponent {
   constructor(private weatherDataService: WeatherDataService) {}
 
   setOptions() {
-    const getWeatherInfo = this.weatherDataService.getWeatherInfo();
-    const weatherInfoArray = Object.values(getWeatherInfo.days).reverse();
+    const weatherInfo = this.weatherDataService.getWeatherInfo();
+    const weatherInfoArray = Object.values(weatherInfo.days).reverse();
     console.log('weatherInfoArray', weatherInfoArray);
     let dateData = [];
     let precipitationData = [];
     let mintempData = [];
     let maxtempData = [];
+
+    console.log(weatherInfo.totalPrecipitation.totalPrecipitation);
 
     for (let info of weatherInfoArray as WeatherInfo[]) {
       dateData.push(info.date);
@@ -92,6 +94,25 @@ export class AdvancedViewComponent {
       ],
     };
 
+    let seriesData = [];
+    for (let i = 0; i < weatherInfoArray.length; i++) {
+      let w = weatherInfoArray[i] as WeatherInfo;
+      let dataItem = {
+        name: `${7 - i} Days ago: ${w.date.substring(5)}`, //calculate number of days ago and strip off the year
+        type: 'bar',
+        stack: 'total',
+        data: [w.dailyPrecipitation],
+        itemStyle: {
+          borderRadius: 20,
+        },
+        label: {
+          show: w.dailyPrecipitation !== 0,
+          position: 'inside',
+        },
+      };
+      seriesData.push(dataItem);
+    }
+
     this.rainOptions = {
       title: {},
       tooltip: {},
@@ -104,9 +125,9 @@ export class AdvancedViewComponent {
       },
       yAxis: {
         min: 0,
-        max: Math.max(getWeatherInfo.totalPrecipitation, 1), //if precipitation is less then 1, set the max to 1
+        max: Math.max(weatherInfo.totalPrecipitation.totalPrecipitation, 1), //if precipitation is less then 1, set the max to 1
       },
-      series: [],
+      series: seriesData,
     };
   }
 }
