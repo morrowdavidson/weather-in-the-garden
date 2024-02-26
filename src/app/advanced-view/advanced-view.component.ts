@@ -117,7 +117,7 @@ export class AdvancedViewComponent {
       title: {},
       tooltip: {},
       legend: {
-        show: true,
+        show: false,
         bottom: 0,
       },
       xAxis: {
