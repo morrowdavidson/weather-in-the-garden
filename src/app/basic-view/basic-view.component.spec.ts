@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WeatherComponent } from './weather.component';
+import { BasicViewComponent } from './basic-view.component';
 
-describe('WeatherComponent', () => {
-  let component: WeatherComponent;
-  let fixture: ComponentFixture<WeatherComponent>;
+describe('BasicViewComponent', () => {
+  let component: BasicViewComponent;
+  let fixture: ComponentFixture<BasicViewComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WeatherComponent]
+      declarations: [BasicViewComponent]
     });
-    fixture = TestBed.createComponent(WeatherComponent);
+    fixture = TestBed.createComponent(BasicViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

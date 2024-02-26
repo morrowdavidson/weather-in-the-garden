@@ -4,9 +4,14 @@
     <div id="searchContainer" class="col-md-6">
       <div class="card main-card">
         <div class="card-body">
+          <img
+            src="../../assets/images/RainRecordLogo.svg"
+            class="img-fluid"
+            alt="Responsive image"
+          />
           <form
             [formGroup]="weatherSearchForm"
-            (ngSubmit)="sendToWS(weatherSearchForm.value)"
+            (ngSubmit)="submitSearch(weatherSearchForm.value)"
           >
             <div class="form-group">
               <input

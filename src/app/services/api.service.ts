@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../environment/environment';
+import { environment } from '../../environment/environment';
 const weatherStackAPIKey = environment.weatherStackAPIKey;
 const openWeatherAPIKEY = environment.openWeatherAPIKEY;
 
 @Injectable({
   providedIn: 'root',
 })
-export class WsService {
+export class ApiService {
   constructor(private http: HttpClient) {}
 
   getLastSevenDays() {
     let dates = '';
-    for (let i = 0; i < 7; i++) {
+    for (let i = 1; i < 8; i++) {
       let d = new Date();
       d.setDate(d.getDate() - i);
       let month = '' + (d.getMonth() + 1);
@@ -23,14 +23,15 @@ export class WsService {
       if (day.length < 2) day = '0' + day;
 
       dates += year + '-' + month + '-' + day;
-      if (i < 6)
+      if (i < 7)
         // Don't add a semicolon after the last date
         dates += ';';
     }
+    console.log(dates);
     return dates;
   }
 
-  getHistorical(location: string) {
+  getHistorical(location: string, interval: string) {
     const dates = this.getLastSevenDays();
 
     return this.http.get(
@@ -40,7 +41,9 @@ export class WsService {
         location +
         '&historical_date=' +
         dates +
-        '&hourly=1&interval=24&units=f'
+        '&hourly=1&interval=' +
+        interval +
+        '&units=f'
     );
   }
 
