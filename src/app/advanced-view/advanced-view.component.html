@@ -1,5 +1,5 @@
 <app-advanced-search></app-advanced-search>
-<div class="container">
+<div *ngIf="searchClicked" class="container">
   <div class="row">
     <div class="col-md-8">
       <div class="card">
@@ -14,7 +14,9 @@
     <div class="col-md-4">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Total Precipitation</h5>
+          <h5 class="card-title">
+            Total Precipitation: {{ totalPrecipitation }}"
+          </h5>
           <h6 class="card-subtitle">Last 7 Days</h6>
 
           <div echarts [options]="rainOptions"></div>

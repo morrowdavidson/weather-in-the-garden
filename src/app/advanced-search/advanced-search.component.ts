@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { WeatherDataService } from '../services/weather-data.service';
-import { AdvancedViewComponent } from '../advanced-view/advanced-view.component';
 
 interface FormValues {
   location: string;
@@ -39,8 +38,7 @@ export class AdvancedSearchComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private apiService: ApiService,
-    private weatherDataService: WeatherDataService,
-    private advancedViewComponent: AdvancedViewComponent
+    private weatherDataService: WeatherDataService
   ) {}
 
   ngOnInit() {
@@ -51,65 +49,59 @@ export class AdvancedSearchComponent implements OnInit {
   }
 
   submitSearch(formValues: FormValues) {
-    this.searchClicked = true;
+    this.weatherDataService.setSearchClicked(true);
     // Get the historical weather data
     this.apiService
       .getHistorical(formValues.location, '24')
       .subscribe((data) => {
         this.weatherData = data;
         this.processWeatherData();
-        this.advancedViewComponent.setOptions();
+        this.weatherDataService.triggerUpdate();
 
         console.log('weatherData', this.weatherData);
       });
   }
 
   processWeatherData() {
-    const { name, region, country } = this.weatherData.location; // Destructure the location object
-    this.locationData = { name, region, country }; // Assign the location data to the locationData object
-
+    this.setLocationData();
     const dateArray = Object.keys(this.weatherData.historical);
-    console.log('dateArray', dateArray);
+    this.processHistoricalData(dateArray);
+    this.weatherDataService.setWeatherInfo(this.weatherInfo);
+  }
 
+  setLocationData() {
+    const { name, region, country } = this.weatherData.location;
+    this.locationData = { name, region, country };
+  }
+
+  processHistoricalData(dateArray: string[]) {
     let totalPrecipitation = 0;
-    let dailyPrecipitation = 0;
 
     for (let i = 0; i < dateArray.length; i++) {
-      const day = 'day(' + (-i - 1) + ')'; // Create an internal string for the day... day(-1) = yesterday; day(-2) = 2 days ago
+      const day = `day(${-i - 1})`;
       const { hourly, mintemp, maxtemp } =
-        this.weatherData.historical[dateArray[i]]; // Destructure the hourly, mintemp, and maxtemp properties from the historical object
-      dailyPrecipitation = 0; // Reset daily precipitation for each day
-      for (
-        let j = 0;
-        j < this.weatherData.historical[dateArray[i]].hourly.length;
-        j++
-      ) {
-        dailyPrecipitation +=
-          this.weatherData.historical[dateArray[i]].hourly[j].precip;
-      }
-      // Now dailyPrecipitation contains the total precipitation for the day
-
-      console.log(
-        `Total precipitation for ${dateArray[i]}: ${dailyPrecipitation}`
-      );
-
-      const date = dateArray[i];
+        this.weatherData.historical[dateArray[i]];
+      const dailyPrecipitation = this.calculateDailyPrecipitation(hourly);
 
       totalPrecipitation += dailyPrecipitation;
-      // Create a new property in weatherInfo for the day and assign it the precipitation and temperature
       this.weatherInfo['days'][day] = {
         dailyPrecipitation,
         mintemp,
         maxtemp,
-        date,
+        date: dateArray[i],
       };
     }
 
     this.weatherInfo['totalPrecipitation'] = {
       totalPrecipitation,
     };
+  }
 
-    this.weatherDataService.setWeatherInfo(this.weatherInfo);
-    console.log('weatherInfo', this.weatherInfo);
+  calculateDailyPrecipitation(hourlyData: any[]): number {
+    let dailyPrecipitation = 0;
+    for (let j = 0; j < hourlyData.length; j++) {
+      dailyPrecipitation += hourlyData[j].precip;
+    }
+    return dailyPrecipitation;
   }
 }
