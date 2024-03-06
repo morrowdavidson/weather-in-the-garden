@@ -1,27 +1,11 @@
 <app-advanced-search></app-advanced-search>
-<div *ngIf="searchClicked" class="container">
+<div class="container">
   <div class="row">
     <div class="col-md-8">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Temperature and Precipitation</h5>
-          <h6 class="card-subtitle">Last 7 Days</h6>
-
-          <div echarts [options]="weatherOptions"></div>
-        </div>
-      </div>
+      <app-temp-precip-chart></app-temp-precip-chart>
     </div>
     <div class="col-md-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">
-            Total Precipitation: {{ totalPrecipitation }}"
-          </h5>
-          <h6 class="card-subtitle">Last 7 Days</h6>
-
-          <div echarts [options]="rainOptions"></div>
-        </div>
-      </div>
+      <app-total-precip-chart></app-total-precip-chart>
     </div>
   </div>
 </div>

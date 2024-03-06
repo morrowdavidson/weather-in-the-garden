@@ -1,0 +1,8 @@
+<div *ngIf="searchClicked" class="card">
+  <div class="card-body">
+    <h5 class="card-title">Temperature and Precipitation</h5>
+    <h6 class="card-subtitle">Last 7 Days</h6>
+
+    <div echarts [options]="weatherOptions"></div>
+  </div>
+</div>

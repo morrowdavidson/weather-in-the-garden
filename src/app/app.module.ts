@@ -16,6 +16,8 @@ import { AdvancedViewComponent } from './advanced-view/advanced-view.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { BasicViewComponent } from './basic-view/basic-view.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
+import { TempPrecipChartComponent } from './temp-precip-chart/temp-precip-chart.component';
+import { TotalPrecipChartComponent } from './total-precip-chart/total-precip-chart.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { AdvancedSearchComponent } from './advanced-search/advanced-search.compo
     NavBarComponent,
     BasicViewComponent,
     AdvancedSearchComponent,
+    TempPrecipChartComponent,
+    TotalPrecipChartComponent,
   ],
   imports: [
     BrowserModule,
