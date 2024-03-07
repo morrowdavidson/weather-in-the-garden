@@ -29,10 +29,13 @@ export class TotalPrecipChartComponent {
 
       const weatherInfo = this.weatherDataService.getWeatherInfo();
       const weatherInfoArray = Object.values(
-        weatherInfo.days
+        weatherInfo['days']
       ).reverse() as WeatherInfo[];
-      this.totalPrecipitation =
-        weatherInfo.totalPrecipitation.totalPrecipitation.toFixed(2);
+      this.totalPrecipitation = parseFloat(
+        weatherInfo?.['totalPrecipitation']?.['totalPrecipitation']?.toFixed(
+          2
+        ) || '0'
+      );
 
       // this.weatherOptions = this.createWeatherOptions(weatherInfoArray);
       this.rainOptions = this.createRainOptions(weatherInfoArray);
